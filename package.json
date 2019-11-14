@@ -1,9 +1,10 @@
 {
   "name": "wdio-applitools-cucumber-service",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Custom WDIO5 service for applitools",
-  "main": "src/index.hs",
+  "main": "./build/index.js",
   "scripts": {
+    "compile": "babel src/ -d build/ --config-file ./babel.config.js",
     "test": "jest",
     "lint": "./node_modules/eslint/bin/eslint.js . --fix"
   },
@@ -15,7 +16,9 @@
     "wdio5",
     "applitools",
     "eyes",
-    "cucumberjs"
+    "cucumberjs",
+    "wdio-plugin",
+    "wdio-service"
   ],
   "author": "Gintare Vilkelyte <vilkelyte.gintare@gmail.com>",
   "license": "ISC",
