@@ -2,7 +2,7 @@
 
 ## Configuration
 
-## Properties
+### Properties
 
 | Property name | Is required | Default value | Description |
 | --- | --- | --- | --- 
@@ -11,7 +11,7 @@
 | viewportSize | false | width:  1440, height:  900 | 
 | forceFullPageScreenshot | false | true | 
 
-## Example: 
+### Example
 ```
 services: [
     [ 'wdio-applitools-cucumber-service' , {
@@ -25,3 +25,15 @@ services: [
     }]
   ]
 ```
+
+## Usage
+
+The service adds 2 global.browser commands: 
+- takeSnapshot
+- takeSnapshotOfRegion
+
+### Example
+
+`browser.takeSnapshot('Login page');`
+
+`browser.takeSnapshotOfRegion('Login page', Target.window().fully())`
