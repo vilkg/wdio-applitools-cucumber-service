@@ -1,0 +1,41 @@
+{
+  "name": "wdio-applitools-cucumber-service",
+  "version": "1.0.0",
+  "description": "Custom WDIO5 service for applitools",
+  "main": "src/index.hs",
+  "scripts": {
+    "test": "jest",
+    "lint": "./node_modules/eslint/bin/eslint.js . --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vilkg/wdio-applitools-cucumber-service.git"
+  },
+  "keywords": [
+    "wdio5",
+    "applitools",
+    "eyes",
+    "cucumberjs"
+  ],
+  "author": "Gintare Vilkelyte <vilkelyte.gintare@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vilkg/wdio-applitools-cucumber-service/issues"
+  },
+  "homepage": "https://github.com/vilkg/wdio-applitools-cucumber-service#readme",
+  "dependencies": {
+    "@applitools/eyes-selenium": "^4.31.16",
+    "@applitools/eyes-webdriverio": "^5.8.3",
+    "@wdio/logger": "^5.16.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/register": "^7.6.2",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "jest": "^24.9.0"
+  }
+}
