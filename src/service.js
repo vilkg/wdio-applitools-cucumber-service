@@ -4,7 +4,7 @@ import logger from '@wdio/logger';
 
 const { Configuration } = require('@applitools/eyes-selenium');
 
-const log = logger('@wdio/eyes-service');
+const log = logger('wdio-applitools-cucumber-service');
 
 const DEFAULT_VIEWPORT = {
   width: 1440,
