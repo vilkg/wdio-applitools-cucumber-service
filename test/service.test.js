@@ -29,7 +29,7 @@ describe('service', () => {
 
     it('inits options if not provided', () => {
       const service = new EyesService();
-      
+
       expect(service.options).not.toBe(undefined);
     })
   });
@@ -77,7 +77,7 @@ describe('service', () => {
     it('overwrites default viewport', () => {
       const options = {
         viewportSize: {
-          width: 200, 
+          width: 200,
           height: 200
         }
       }
@@ -131,22 +131,12 @@ describe('service', () => {
       expect(global.browser.addCommand).toBeCalled();
       expect(global.browser.addCommand.mock.calls[0]).toContainEqual('takeSnapshot');
       expect(global.browser.addCommand.mock.calls[1]).toContainEqual('takeSnapshotOfTarget');
-    });
+    })
+  });
 
-    it('registers takeSnapshot that requires title', () => {
-      const service = new EyesService();
-      service.isConfigured = true;
 
-      service.before();
-
-      expect(global.browser.takeSnapshot).toThrow('Title for applitools snapshot is missing');
-
-      global.browser.takeSnapshot('Snapshot title');
-      
-      expect(service.eyes.check).toBeCalledWith('Snapshot title', 'a default window');
-    });
-
-    it('registers takeSnapshotOfTarget that requires title and target', () => {
+  describe('takeSnapshotOfTarget', () => {
+    it('requires title and target', () => {
       const service = new EyesService();
       service.isConfigured = true;
 
@@ -158,9 +148,69 @@ describe('service', () => {
       }).toThrow('You must specify a target. Example: Target.window()');
 
       global.browser.takeSnapshotOfTarget('Snapshot title', 'A window');
-      
+
       expect(service.eyes.check).toBeCalledWith('Snapshot title', 'A window');
     });
+
+    it('opens eyes if not open', () => {
+      const service = new EyesService();
+      service.eyesOpened = false;
+      service.isConfigured = true;
+
+      service.before();
+      expect(() => {
+        global.browser.takeSnapshotOfTarget('title', 'A window');
+      }).not.toThrow();
+
+      expect(global.browser.call).toBeCalled();
+      expect(service.eyes.open).toBeCalled();
+      expect(service.eyesOpened).toBe(true);
+    });
+  });
+
+  describe('takeSnapshot', () => {
+    it('requires title', () => {
+      const service = new EyesService();
+      service.isConfigured = true;
+
+      service.before();
+
+      expect(global.browser.takeSnapshot).toThrow('Title for applitools snapshot is missing');
+
+      global.browser.takeSnapshot('Snapshot title');
+
+      expect(service.eyes.check).toBeCalledWith('Snapshot title', 'a default window');
+    });
+
+    it('opens eyes if not open', () => {
+      const service = new EyesService();
+      service.eyesOpened = false;
+      service.isConfigured = true;
+
+      service.before();
+      expect(() => {
+        global.browser.takeSnapshot('title', 'A window');
+      }).not.toThrow();
+
+      expect(global.browser.call).toBeCalled();
+      expect(service.eyes.open).toBeCalled();
+      expect(service.eyesOpened).toBe(true);
+    })
+
+    it('does not open eyes if it was open', () => {
+      const service = new EyesService();
+      service.eyesOpened = true;
+      service.isConfigured = true;
+
+      service.before();
+      expect(() => {
+        global.browser.takeSnapshot('title', 'A window');
+      }).not.toThrow();
+
+      expect(global.browser.call).not.toBeCalled();
+      expect(service.eyes.open).not.toBeCalled();
+      expect(service.eyesOpened).toBe(true);
+    })
   });
 
   describe('beforeScenario', () => {
@@ -178,18 +228,8 @@ describe('service', () => {
       service.isConfigured = true;
 
       service.beforeScenario('uri', 'feature', { name: 'scenario name' });
-      
+
       expect(service.eyes.setTestName).toBeCalledWith('scenario name');
-    });
-
-    test('opens eyes', () => {
-      const service = new EyesService();
-      service.isConfigured = true;
-
-      service.beforeScenario('uri', 'feature', { name: 'scenario name' });
-
-      expect(global.browser.call).toBeCalled();
-      expect(service.eyes.open).toBeCalledWith(global.browser);
     });
   });
 

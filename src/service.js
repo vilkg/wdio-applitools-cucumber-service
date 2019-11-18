@@ -5,17 +5,17 @@ import logger from '@wdio/logger';
 const { Configuration } = require('@applitools/eyes-selenium');
 
 const log = logger('wdio-applitools-cucumber-service');
-
 const DEFAULT_VIEWPORT = {
   width: 1440,
   height: 900
 };
 
 export default class EyesService {
-  constructor(options) {
-    this.options = options || {};
+  constructor(config) {
+    this.options = config || {};
     this.eyes = new Eyes();
     this.isConfigured = false;
+    this.eyesOpened = false;
   }
 
   beforeSession() {
@@ -57,6 +57,9 @@ export default class EyesService {
       }
 
       log.info(`Taking snapshot with title: ${title}`);
+      if (!this.eyesOpened) {
+        this._openEyes();
+      }
       return this.eyes.check(title, Target.window());
     });
 
@@ -69,6 +72,10 @@ export default class EyesService {
         throw new Error('You must specify a target. Example: Target.window()');
       }
 
+      if (!this.eyesOpened) {
+        this._openEyes();
+      }
+
       log.info(`Taking snapshot with title: ${title}`);
       return this.eyes.check(title, target);
     });
@@ -79,10 +86,6 @@ export default class EyesService {
       return;
     }
     this.eyes.setTestName(scenario.name);
-
-    log.info('Opening applitools eyes.');
-
-    global.browser.call(() => this.eyes.open(global.browser));
   }
 
   afterScenario() {
@@ -101,5 +104,10 @@ export default class EyesService {
 
     log.info('Aborting applitools eyes');
     global.browser.call(() => this.eyes.abortIfNotClosed());
+  }
+
+  _openEyes() {
+    global.browser.call(() => this.eyes.open(global.browser));
+    this.eyesOpened = true;
   }
 }
