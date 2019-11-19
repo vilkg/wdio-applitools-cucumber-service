@@ -244,9 +244,21 @@ describe('service', () => {
       expect(service.eyes.close).not.toBeCalled();
     });
 
+    it('returns if eyes not open', () => {
+      const service = new EyesService();
+      service.isConfigured = true;
+      service.eyesOpened = false;
+
+      service.afterScenario(); 
+      
+      expect(global.browser.call).not.toBeCalled();
+      expect(service.eyes.close).not.toBeCalled();      
+    })
+
     it('closes eyes', () => {
       const service = new EyesService();
       service.isConfigured = true;
+      service.eyesOpened = true;
 
       service.afterScenario();
 
@@ -265,9 +277,21 @@ describe('service', () => {
       expect(service.eyes.abortIfNotClosed).not.toBeCalled();
     });
 
+    it ('returns if eyes not opened', () => {
+      const service = new EyesService();
+      service.isConfigured = true;
+      service.eyesOpened = false;
+
+      service.afterSession();
+
+      expect(global.browser.call).not.toBeCalled();
+      expect(service.eyes.abortIfNotClosed).not.toBeCalled();
+    })
+
     it('aborts eyes', () => {
       const service = new EyesService();
       service.isConfigured = true;
+      service.eyesOpened = true;
 
       service.afterSession();
 

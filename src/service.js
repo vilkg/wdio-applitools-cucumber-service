@@ -89,7 +89,7 @@ export default class EyesService {
   }
 
   afterScenario() {
-    if (!this.isConfigured) {
+    if (!this.isConfigured || !this.eyesOpened) {
       return;
     }
 
@@ -98,7 +98,7 @@ export default class EyesService {
   }
 
   afterSession() {
-    if (!this.isConfigured) {
+    if (!this.isConfigured || !this.eyesOpened) {
       return;
     }
 
